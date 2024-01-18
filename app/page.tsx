@@ -11,10 +11,6 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore';
 export default function Home() {
   const [isSignedIn, setSignedIn] = useState<boolean>(false)
   const [user, setUser] = useState<{ displayName: string, id: string }>({ displayName: "", id: "" })
-  const [group, setGroup] = useState<{ 
-    groupId: string, 
-    groupName: string,
-  }[]>([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -35,13 +31,13 @@ export default function Home() {
 
   return (
     <>
-    { isSignedIn ? (
-      <div className="max-w-[1920px] w-full">
-        <DashBoard />
-      </div>
-    ) : (
-      <Login />
-    )}
+      { isSignedIn ? (
+        <div className="max-w-[1920px] w-full">
+          <DashBoard />
+        </div>
+      ) : (
+        <Login />
+      )}
     </>
   )
 }
