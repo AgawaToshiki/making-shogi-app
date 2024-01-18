@@ -1,13 +1,34 @@
-import React, { useRef, useState } from 'react'
-import SignOut from './SignOut';
-import DeleteAccount from './DeleteAccount';
+import React from 'react';
+import Image from 'next/image';
+import Link from "next/link";
 
-const Header = () => {
+
+type Props = {
+  user: {
+    displayName: string;
+    id: string;
+  }
+}
+
+const Header = ({ user }: Props) => {
   return (
     <>
-      <div className="flex justify-start gap-[10px] my-10 max-md:flex-col-reverse">
-        <DeleteAccount />
-        <SignOut />
+      <div className="fixed z-20 w-full py-6 px-4 flex justify-end gap-[10px] max-md:flex-col-reverse bg-red-100 shadow-md">
+        <div>
+          <Link href="/mypage" className="flex items-center">
+            <Image src="/images/user.png" width={50} height={50} alt=""/>
+            <div>
+              {user.displayName === "" 
+                ? (
+                  <p>ゲストさん</p>
+                )
+                : (
+                  <p>{user.displayName}さん</p>
+                )
+              }
+            </div>
+          </Link>
+        </div>
       </div>
     </>
   )

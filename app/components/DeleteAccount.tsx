@@ -27,6 +27,7 @@ const DeleteAccount = () => {
               }
           await deleteDoc((doc(db, "users", user.uid)));
           await deleteUser(user)
+          window.location.href = "/"
           console.log("delete account success")
         } catch {
           alert("アカウントが削除できませんでした")

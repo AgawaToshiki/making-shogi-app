@@ -5,11 +5,21 @@ import React, { useRef, useState } from 'react'
 // import { auth, db } from "../../firebase";
 import Header from './Header';
 
-const DashBoard = () => {
+type Props = {
+  user: {
+    displayName: string;
+    id: string;
+  }
+}
+
+const DashBoard = ({ user }: Props) => {
+
   return (
     <>
-      <Header />
-      <h1>test</h1>
+      <Header user={user} />
+      <main className="max-w-[1920px] pt-40">
+        <h2 className="text-xl">詰将棋一覧</h2>
+      </main>
     </>
   )
 }

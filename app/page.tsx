@@ -33,7 +33,7 @@ export default function Home() {
     <>
       { isSignedIn ? (
         <div className="max-w-[1920px] w-full">
-          <DashBoard />
+          <DashBoard user={user} />
         </div>
       ) : (
         <Login />
