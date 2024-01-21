@@ -14,7 +14,7 @@ const Login = () => {
             .then((userCredential) => {
               // Signed in 
               const user = userCredential.user;
-              setUserInfo(user.uid, "");
+              setUserInfo(user.uid, "", "");
             }).catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
