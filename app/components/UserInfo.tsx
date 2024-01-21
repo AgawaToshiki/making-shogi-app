@@ -4,10 +4,14 @@ import Image from 'next/image';
 import { onAuthStateChanged } from 'firebase/auth';
 import { getUser } from '../utils/auth';
 
+type Props = {
+  handleEdit: () => void;
+};
 
-const UserInfo = () => {
 
-  const [user, setUser] = useState<{ displayName: string, id: string }>({ displayName: "", id: "" })
+const UserInfo = ({ handleEdit }: Props) => {
+
+  const [user, setUser] = useState<{ displayName: string, id: string, imagePath: string }>({ displayName: "", id: "", imagePath: "" })
 
   useEffect(() => {
     onAuthStateChanged(auth, async(user) => {
@@ -20,8 +24,8 @@ const UserInfo = () => {
    
   return (
     <>
-      <div>
-        <Image src="/images/user.png" width={50} height={50} alt=""/>
+      <div className="flex items-center">
+        <Image src={user.imagePath} width={50} height={50} alt=""/>
         <div>
           {user.displayName === ""
             ? (
@@ -32,6 +36,7 @@ const UserInfo = () => {
             )
           }
         </div>
+        <button onClick={ handleEdit }>編集</button>
       </div>
     </>
   )

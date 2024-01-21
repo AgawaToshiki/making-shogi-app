@@ -10,9 +10,8 @@ import ProtectRoute from '../components/ProtectRoute';
 
 export default function MyPage() {
   const [isEditing, setEditing] = useState<boolean>(false)
-  const handleChangeView = () => {
+  const handleEdit = () => {
     setEditing(!isEditing)
-    console.log(isEditing)
   }
 
 
@@ -22,13 +21,13 @@ export default function MyPage() {
         <div>mypage</div>
           {isEditing 
             ? (
-              <EditInfo />
+                <EditInfo />
             ) 
             : (
-              <UserInfo />
+                <UserInfo handleEdit={ handleEdit }/>
             )
           }
-          <button onClick={ handleChangeView }>編集</button>
+          
           <DeleteAccount />
           <SignOut />
       </ProtectRoute>

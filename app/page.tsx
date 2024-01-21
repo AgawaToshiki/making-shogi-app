@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Login from './components/Login';
 import DashBoard from './components/DashBoard';
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../firebase";
-import { doc, getDoc } from 'firebase/firestore';
+import { auth } from "../firebase";
 import { getUser } from './utils/auth';
 
 
