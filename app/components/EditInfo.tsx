@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { auth } from "../../firebase";
+import { auth, db } from "../../firebase";
 import { storage } from "../../firebase"
-import { ref, uploadBytes } from "firebase/storage"
+import { deleteObject, ref, uploadBytes } from "firebase/storage"
 import { getUser, setUserInfo } from '../utils/auth';
 import { onAuthStateChanged } from 'firebase/auth';
+import { doc, updateDoc } from 'firebase/firestore';
 
 
 
@@ -43,13 +44,21 @@ const EditInfo = () => {
       const storageRef = ref(storage, imagePath)
       try{
         await uploadBytes(storageRef, file)
+        if(user.imagePath !== ""){
+          const oldImageRef = ref(storage, user.imagePath)
+          await deleteObject(oldImageRef);
+        }
       }catch(error){
         console.error(error)
         alert('画像を正常に登録できませんでした')
       }
     }
     if(auth.currentUser){
-      await setUserInfo(auth.currentUser.uid, name, imagePath)
+      const userRef = doc(db, "users", auth.currentUser.uid)
+      await updateDoc(userRef, {
+        displayName: name,
+        photoURL: imagePath
+      })
     }
     window.location.href = "/mypage"
   }
