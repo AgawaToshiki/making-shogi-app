@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { auth } from "../../firebase";
 import { storage } from "../../firebase"
 import { ref, uploadBytes } from "firebase/storage"
-import { setUserInfo } from '../utils/auth';
+import { getUser, setUserInfo } from '../utils/auth';
+import { onAuthStateChanged } from 'firebase/auth';
 
 
 
 const EditInfo = () => {
+  const [user, setUser] = useState<{ displayName: string, id: string, imagePath: string }>({ displayName: "", id: "", imagePath: "" })
   const [imagePath, setImagePath] = useState<string>("")
   const [file, setFile] = useState<File | null>(null)
   const [name, setName] = useState<string>("")
+
+  useEffect(() => {
+    onAuthStateChanged(auth, async(user) => {
+      if(user){
+        const userdata = await getUser(user.uid);
+        setUser(userdata);
+      }
+    });
+  }, [])
 
   const previewImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     if(auth.currentUser){
@@ -46,6 +57,16 @@ const EditInfo = () => {
   return (
     <>
     <div className="flex items-center">
+      {user.imagePath == "" 
+        ? 
+        (
+          <Image src="/images/user.png" width={50} height={50} alt=""/>
+        ) 
+        : 
+        (
+          <Image src={user.imagePath} width={50} height={50} alt=""/>
+        )
+      }
       <input type="file" onChange={ previewImage } accept="image/*"/>
       <input type="text" value={ name } onChange={(e: React.ChangeEvent<HTMLInputElement>)=> setName(e.target.value)} className="border" placeholder="名前"/>
       <button onClick={ handleRegister }>登録</button>
