@@ -25,7 +25,16 @@ const UserInfo = ({ handleEdit }: Props) => {
   return (
     <>
       <div className="flex items-center">
-        <Image src={user.imagePath} width={50} height={50} alt=""/>
+      {user.imagePath == "" 
+        ? 
+        (
+          <Image src="/images/user.png" width={50} height={50} alt=""/>
+        ) 
+        : 
+        (
+          <Image src={user.imagePath} width={50} height={50} alt=""/>
+        )
+      }
         <div>
           {user.displayName === ""
             ? (

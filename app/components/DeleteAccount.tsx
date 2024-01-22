@@ -22,9 +22,9 @@ const DeleteAccount = () => {
           const userQuery = query(collection(db, "users"), where("userId", "==", user.uid));
           const querySnapshot = await getDocs(userQuery);
           if (!querySnapshot.empty) {
-                const userDoc = querySnapshot.docs[0];
-                await deleteDoc(userDoc.ref);
-              }
+            const userDoc = querySnapshot.docs[0];
+            await deleteDoc(userDoc.ref);
+          }
           await deleteDoc((doc(db, "users", user.uid)));
           await deleteUser(user)
           window.location.href = "/"
