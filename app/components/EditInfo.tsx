@@ -20,6 +20,7 @@ const EditInfo = () => {
       if(user){
         const userdata = await getUser(user.uid);
         setUser(userdata);
+        setName(userdata.displayName)
       }
     });
   }, [])
