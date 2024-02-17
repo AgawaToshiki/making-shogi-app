@@ -13,6 +13,13 @@ const Header = ({ user }: Props) => {
   return (
     <>
       <div className="fixed z-20 w-full py-6 px-4 flex justify-end gap-[10px] max-md:flex-col-reverse bg-red-100 shadow-md">
+        <nav>
+          <ul>
+            <li>
+              <Link href="/create">詰将棋作成</Link>
+            </li>
+          </ul>
+        </nav>
       </div>
     </>
   )
