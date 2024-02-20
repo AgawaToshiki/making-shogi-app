@@ -11,8 +11,8 @@ import SignOut from './components/SignOut';
 
 
 export default function Home() {
-  const [isSignedIn, setSignedIn] = useState<boolean>(false)
-  const [user, setUser] = useState<{ id: string }>({ id: "" })
+  const [isSignedIn, setSignedIn] = useState<boolean>(false);
+  const [user, setUser] = useState<{ id: string }>({ id: "" });
 
   useEffect(() => {
     onAuthStateChanged(auth, async(user) => {

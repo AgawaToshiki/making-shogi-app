@@ -1,16 +1,27 @@
-import React from 'react'
+import React from 'react';
+import Image from "next/image";
 
 interface SquareProps {
-  piece: string;
+  piecePath: string;
   onClick: () => void;
 }
-const Square = ({ piece, onClick }: SquareProps) => {
+const Square = ({ piecePath, onClick }: SquareProps) => {
   return (
     <div 
-      className="w-[75px] h-[75px] p-6 border border-collapse box-border text-center bg-yellow-100"
+      className="w-[75px] h-[75px] p-4 border border-collapse box-border text-center bg-yellow-100"
       onClick={onClick}
     >
-      {piece}
+      {piecePath ? (
+        <Image 
+          src={piecePath} 
+          width={140} 
+          height={148} 
+          alt="" 
+          style={{ width: "75px", height: "auto" }}
+        />
+      ):(
+        <div></div>
+      )}
     </div>
   )
 }
