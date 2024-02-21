@@ -4,37 +4,26 @@ import ProtectRoute from '../components/ProtectRoute';
 import Square from '../components/Square';
 import Image from "next/image";
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { auth, db } from '@/firebase';
 import { v4 as uuidv4 } from 'uuid';
 
 const Create = () => {
+  const defaultBoard: { [key: string]: string }[] = [
+    { "9一": "", "8一": "", "7一": "", "6一": "", "5一": "", "4一": "", "3一": "", "2一": "", "1一": "" },
+    { "9二": "", "8二": "", "7二": "", "6二": "", "5二": "", "4二": "", "3二": "", "2二": "", "1二": "" },
+    { "9三": "", "8三": "", "7三": "", "6三": "", "5三": "", "4三": "", "3三": "", "2三": "", "1三": "" },
+    { "9四": "", "8四": "", "7四": "", "6四": "", "5四": "", "4四": "", "3四": "", "2四": "", "1四": "" },
+    { "9五": "", "8五": "", "7五": "", "6五": "", "5五": "", "4五": "", "3五": "", "2五": "", "1五": "" },
+    { "9六": "", "8六": "", "7六": "", "6六": "", "5六": "", "4六": "", "3六": "", "2六": "", "1六": "" },
+    { "9七": "", "8七": "", "7七": "", "6七": "", "5七": "", "4七": "", "3七": "", "2七": "", "1七": "" },
+    { "9八": "", "8八": "", "7八": "", "6八": "", "5八": "", "4八": "", "3八": "", "2八": "", "1八": "" },
+    { "9九": "", "8九": "", "7九": "", "6九": "", "5九": "", "4九": "", "3九": "", "2九": "", "1九": "" },
+  ]
   const [piecePath, setPiecePath] = useState<string>("");
-  const [board, setBoard] = useState<string[][]>
-  ([
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-  ]);
-  // const [board, setBoard] = useState<{}[]>
-  // ([
-  //   {"1九": "", "1八": "", "1七": "", "1六": "", "1五": "", "1四": "", "1三": "", "1二": "", "1一": ""},
-  //   {"2九": "", "2八": "", "2七": "", "2六": "", "2五": "", "2四": "", "2三": "", "2二": "", "2一": ""},
-  //   {"3九": "", "3八": "", "3七": "", "3六": "", "3五": "", "3四": "", "3三": "", "3二": "", "3一": ""},
-  //   {"4九": "", "4八": "", "4七": "", "4六": "", "4五": "", "4四": "", "4三": "", "4二": "", "4一": ""},
-  //   {"5九": "", "5八": "", "5七": "", "5六": "", "5五": "", "5四": "", "5三": "", "5二": "", "5一": ""},
-  //   {"6九": "", "6八": "", "6七": "", "6六": "", "6五": "", "6四": "", "6三": "", "6二": "", "6一": ""},
-  //   {"7九": "", "7八": "", "7七": "", "7六": "", "7五": "", "7四": "", "7三": "", "7二": "", "7一": ""},
-  //   {"8九": "", "8八": "", "8七": "", "8六": "", "8五": "", "8四": "", "8三": "", "8二": "", "8一": ""},
-  //   {"9九": "", "9八": "", "9七": "", "9六": "", "9五": "", "9四": "", "9三": "", "9二": "", "9一": ""},
-  // ]);
+  const [board, setBoard] = useState<{ [key: string]: string }[]>(defaultBoard);
   const [hasPiece, setHasPiece] = useState<string[]>([]);
   const boardNumber = ["一","二","三","四","五","六","七","八","九"];
+  const boardRowNumber = [1,2,3,4,5,6,7,8,9];
   const pieces = [
     { name: '王', imagePath: '/images/black_king.png' },
     { name: '飛', imagePath: '/images/black_rook.png' },
@@ -72,9 +61,9 @@ const Create = () => {
     setPiecePath(item);
   }
 
-  const handleSetArea = (row: number, col: number) => {
+  const handleSetArea = (row: number, colKey: string) => {
     const newBoard = [...board];
-    newBoard[row][col] = piecePath;
+    newBoard[row][colKey] = piecePath
     setBoard(newBoard);
     setPiecePath("");
     console.log(board);
@@ -89,30 +78,22 @@ const Create = () => {
   }
 
   const handleBoardReset = () => {
-    setBoard([
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-    ])
+    setBoard(defaultBoard);
   }
 
   const handleMyAreaReset = () => {
-    setHasPiece([])
+    setHasPiece([]);
   }
 
   const handleSaveShogi = async() => {
-    const shogiId = uuidv4()
-    // await setDoc(doc(db, "Games", shogiId), {
-    //   shogiId: shogiId,
-    //   board: board,
-    //   hasPiece: hasPiece
-    // })
+    const shogiId = uuidv4();
+    await setDoc(doc(db, "games", shogiId), {
+      shogiId: shogiId,
+      board: board,
+      hasPiece: hasPiece,
+      uid: auth.currentUser?.uid
+    });
+    setBoard(defaultBoard);
   }
 
   return (
@@ -121,24 +102,17 @@ const Create = () => {
         <div className="flex items-end mb-4">
           <div>
             <div className="flex items-center">
-              <p className="w-[75px] px-6 pb-2 text-center">9</p>
-              <p className="w-[75px] px-6 pb-2 text-center">8</p>
-              <p className="w-[75px] px-6 pb-2 text-center">7</p>
-              <p className="w-[75px] px-6 pb-2 text-center">6</p>
-              <p className="w-[75px] px-6 pb-2 text-center">5</p>
-              <p className="w-[75px] px-6 pb-2 text-center">4</p>
-              <p className="w-[75px] px-6 pb-2 text-center">3</p>
-              <p className="w-[75px] px-6 pb-2 text-center">2</p>
-              <p className="w-[75px] px-6 pb-2 text-center">1</p>
-              <p className="w-[50px] pl-2"></p>
+              {boardRowNumber.map((index) => (
+                <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+              ))}
             </div>
             {board.map((row, rowIndex) => (
               <div key={rowIndex} className="flex items-center">
-                {row.map((piece, colIndex) => (
+                {Object.entries(row).map(([colKey, piece]) => (
                   <Square 
-                    key={`${rowIndex}-${colIndex}`} 
+                    key={`${rowIndex}-${colKey}`} 
                     piecePath={piece}
-                    onClick={() => handleSetArea(rowIndex, colIndex)}
+                    onClick={() => handleSetArea(rowIndex, colKey)}
                   />
                 ))}
                 <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>

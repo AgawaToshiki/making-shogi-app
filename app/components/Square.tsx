@@ -3,7 +3,7 @@ import Image from "next/image";
 
 interface SquareProps {
   piecePath: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 const Square = ({ piecePath, onClick }: SquareProps) => {
   return (
