@@ -45,7 +45,7 @@ const DashBoard = ({ user }: Props) => {
       })
     })
   },[])
-  
+
   const handleDeleteShogi = async(id: string) => {
     await deleteDoc(doc(db, "games", id))
   }
@@ -79,7 +79,7 @@ const DashBoard = ({ user }: Props) => {
               <div>
                 <div className="mb-10">
                   <div>
-                    <button onClick={() => handleDeleteShogi(game.shogiId)}>削除</button>
+                    <button onClick={() => handleDeleteShogi(game.shogiId)} className="border-2 border-font-color p-2 bg-red-300">削除</button>
                   </div>
                 </div>
                 <p>持ち駒</p>

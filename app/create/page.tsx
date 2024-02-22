@@ -123,14 +123,12 @@ const Create = () => {
           </div>
           <div>
             <div className="mb-10">
-              <div>
-                <button onClick={handleSaveShogi}>保存</button>
+              <div className="mb-10">
+                <button onClick={handleSaveShogi} className="w-[200px] h-[200px] border-2 border-font-color p-6 text-2xl bg-green-300">保存</button>
               </div>
               <div>
-                <button onClick={handleBoardReset}>盤面リセット</button>
-              </div>
-              <div>
-                <button onClick={handleMyAreaReset}>持ち駒リセット</button>
+                <button onClick={handleBoardReset} className="border-2 border-font-color p-2 bg-red-300">盤面リセット</button>
+                <button onClick={handleMyAreaReset} className="border-2 border-font-color p-2 bg-red-300">持ち駒リセット</button>
               </div>
             </div>
             <p>持ち駒</p>
