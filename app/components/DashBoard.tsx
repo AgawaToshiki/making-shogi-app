@@ -49,39 +49,43 @@ const DashBoard = ({ user }: Props) => {
     <>
       <Header />
       <main className="max-w-[1920px] pt-20">
-        <h2 className="text-xl">詰将棋一覧</h2>
-        <div className="flex flex-wrap w-full">
+        <div className="flex flex-col items-center w-full">
           {game.map((game, gameIndex) => (
-            <div key={gameIndex} className="w-[50%] min-w-[750px]">
-              <div className="flex items-center">
-                {boardRowNumber.map((index) => (
-                  <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+            <div key={gameIndex} className="flex items-end mb-20">
+              <div>
+                <div className="flex items-center">
+                  {boardRowNumber.map((index) => (
+                    <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+                  ))}
+                </div>
+                {game.board.map((row, rowIndex) => (
+                  <div key={rowIndex} className="flex items-center">
+                    {Object.values(row).map((piece, colIndex) => (
+                      <Square 
+                        key={`${rowIndex}-${colIndex}`} 
+                        piecePath={piece}
+                      />
+                    ))}
+                    <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>
+                  </div>
                 ))}
               </div>
-              {game.board.map((row, rowIndex) => (
-                <div key={rowIndex} className="flex items-center">
-                  {Object.values(row).map((piece, colIndex) => (
-                    <Square 
-                      key={`${rowIndex}-${colIndex}`} 
-                      piecePath={piece}
+              <div>
+                <p>持ち駒</p>
+                <div 
+                  className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100"
+                >
+                  {game.hasPiece.map((piece, index) => (
+                    <Image
+                      key={index} 
+                      src={piece} 
+                      width={140} 
+                      height={148} 
+                      alt="持ち駒" 
+                      style={{ width: "40px", height: "auto", objectFit: 'contain' }}
                     />
                   ))}
-                  <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>
                 </div>
-              ))}
-              <div 
-                className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100"
-              >
-                {game.hasPiece.map((piece, index) => (
-                  <Image
-                    key={index} 
-                    src={piece} 
-                    width={140} 
-                    height={148} 
-                    alt="持ち駒" 
-                    style={{ width: "40px", height: "auto", objectFit: 'contain' }}
-                  />
-                ))}
               </div>
             </div>
           ))}
