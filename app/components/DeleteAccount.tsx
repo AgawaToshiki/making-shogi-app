@@ -20,12 +20,19 @@ const DeleteAccount = () => {
         try{
           await reauthenticateWithCredential(user, credentials);
           const userQuery = query(collection(db, "users"), where("userId", "==", user.uid));
+          const gameQuery = query(collection(db, "games"), where("uid", "==", user.uid));
           const querySnapshot = await getDocs(userQuery);
           if (!querySnapshot.empty) {
             const userDoc = querySnapshot.docs[0];
             await deleteDoc(userDoc.ref);
           }
           await deleteDoc((doc(db, "users", user.uid)));
+
+          const gameQuerySnapshot = await getDocs(gameQuery);
+          gameQuerySnapshot.forEach((doc) => {
+            deleteDoc(doc.ref);
+          })
+          
           await deleteUser(user)
           window.location.href = "/"
           console.log("delete account success")
