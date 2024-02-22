@@ -12,10 +12,13 @@ const Header = () => {
         <nav>
           <ul className="flex gap-8">
             <li>
-              <Link href="/">詰将棋一覧</Link>
+              <Link href="/" scroll={false}>詰将棋一覧</Link>
             </li>
             <li>
-              <Link href="/create">詰将棋作成</Link>
+              <Link href="/create" scroll={false}>詰将棋作成</Link>
+            </li>
+            <li>
+              <Link href="/setting" scroll={false}>設定</Link>
             </li>
           </ul>
         </nav>

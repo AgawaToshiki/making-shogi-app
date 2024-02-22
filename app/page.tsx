@@ -5,8 +5,6 @@ import DashBoard from './components/DashBoard';
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase";
 import { getUser } from './utils/auth';
-import DeleteAccount from './components/DeleteAccount';
-import SignOut from './components/SignOut';
 
 
 
@@ -30,8 +28,6 @@ export default function Home() {
       { isSignedIn ? (
         <div className="max-w-[1920px] w-full">
           <DashBoard user={ user } />
-          <DeleteAccount />
-          <SignOut />
         </div>
       ) : (
         <Login />
