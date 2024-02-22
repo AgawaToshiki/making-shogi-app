@@ -6,6 +6,7 @@ import Image from "next/image";
 import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import { v4 as uuidv4 } from 'uuid';
+import Header from '../components/Header';
 
 const Create = () => {
   const defaultBoard: { [key: number]: string }[] = [
@@ -98,7 +99,8 @@ const Create = () => {
 
   return (
     <ProtectRoute>
-      <div className="flex flex-col justify-center items-center">
+      <Header />
+      <div className="flex flex-col justify-center items-center pt-20">
         <div className="flex items-end mb-4">
           <div>
             <div className="flex items-center">
@@ -149,7 +151,7 @@ const Create = () => {
             </div>
           </div>
         </div>
-        <div className="p-2 border border-gray-500">
+        <div className="flex gap-8 p-2 border border-gray-500">
           <div>
             <p>攻め方・持ち駒</p>
             {pieces.map((piece, index) => (
