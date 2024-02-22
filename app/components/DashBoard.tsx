@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, query, where } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import Square from './Square';
 import Image from "next/image";
@@ -24,7 +24,7 @@ const DashBoard = ({ user }: Props) => {
     { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
     { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
   ]
-  const [game, setGame] = useState<{ board: { [key: number]: string }[], hasPiece: string[] }[]>([{ board: defaultBoard, hasPiece: [] }]);
+  const [game, setGame] = useState<{ board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[]>([{ board: defaultBoard, hasPiece: [], shogiId: "" }]);
   const boardNumber = ["一","二","三","四","五","六","七","八","九"];
   const boardRowNumber = [1,2,3,4,5,6,7,8,9];
   useEffect(() => {
@@ -32,18 +32,24 @@ const DashBoard = ({ user }: Props) => {
     console.log(uid)
     const gamesQuery = query(collection(db, "games"), where("uid", "==", uid))
     onSnapshot(gamesQuery, (querySnapshot) => {
-      const games : { board: { [key: number]: string }[], hasPiece: string[] }[] = [];
+      const games : { board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         const gameData = {
           board: data.board,
-          hasPiece: data.hasPiece
+          hasPiece: data.hasPiece,
+          shogiId: data.shogiId
         }
         games.push(gameData)
         setGame(games)
       })
     })
   },[])
+  
+  const handleDeleteShogi = async(id: string) => {
+    await deleteDoc(doc(db, "games", id))
+  }
+
   console.log(game)
   return (
     <>
@@ -71,6 +77,11 @@ const DashBoard = ({ user }: Props) => {
                 ))}
               </div>
               <div>
+                <div className="mb-10">
+                  <div>
+                    <button onClick={() => handleDeleteShogi(game.shogiId)}>削除</button>
+                  </div>
+                </div>
                 <p>持ち駒</p>
                 <div 
                   className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100"
