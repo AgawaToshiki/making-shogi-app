@@ -17,18 +17,19 @@ type Props = {
 }
 
 const DashBoard = ({ user }: Props) => {
-  const defaultBoard: { [key: string]: string }[] = [
-    { "9一": "", "8一": "", "7一": "", "6一": "", "5一": "", "4一": "", "3一": "", "2一": "", "1一": "" },
-    { "9二": "", "8二": "", "7二": "", "6二": "", "5二": "", "4二": "", "3二": "", "2二": "", "1二": "" },
-    { "9三": "", "8三": "", "7三": "", "6三": "", "5三": "", "4三": "", "3三": "", "2三": "", "1三": "" },
-    { "9四": "", "8四": "", "7四": "", "6四": "", "5四": "", "4四": "", "3四": "", "2四": "", "1四": "" },
-    { "9五": "", "8五": "", "7五": "", "6五": "", "5五": "", "4五": "", "3五": "", "2五": "", "1五": "" },
-    { "9六": "", "8六": "", "7六": "", "6六": "", "5六": "", "4六": "", "3六": "", "2六": "", "1六": "" },
-    { "9七": "", "8七": "", "7七": "", "6七": "", "5七": "", "4七": "", "3七": "", "2七": "", "1七": "" },
-    { "9八": "", "8八": "", "7八": "", "6八": "", "5八": "", "4八": "", "3八": "", "2八": "", "1八": "" },
-    { "9九": "", "8九": "", "7九": "", "6九": "", "5九": "", "4九": "", "3九": "", "2九": "", "1九": "" },
+  const defaultBoard: { [key: number]: string }[] = [
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
   ]
-  const [board, setBoard] = useState<{ [key: string]: string }[]>(defaultBoard);
+  const [game, setGame] = useState<{ board: { [key: number]: string }[], hasPiece: string[] }[]>([{ board: defaultBoard, hasPiece: [] }]);
+  const [board, setBoard] = useState<{ [key: number]: string }[]>(defaultBoard);
   const [hasPiece, setHasPiece] = useState<string[]>([]);
   const boardNumber = ["一","二","三","四","五","六","七","八","九"];
   const boardRowNumber = [1,2,3,4,5,6,7,8,9];
@@ -37,15 +38,21 @@ const DashBoard = ({ user }: Props) => {
     console.log(uid)
     const gamesQuery = query(collection(db, "games"), where("uid", "==", uid))
     onSnapshot(gamesQuery, (querySnapshot) => {
+      const games : { board: { [key: number]: string }[], hasPiece: string[] }[] = [];
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         setBoard(data.board);
         setHasPiece(data.hasPiece);
-        console.log(data.board)
+        const gameData = {
+          board: data.board,
+          hasPiece: data.hasPiece
+        }
+        games.push(gameData)
+        setGame(games)
       })
     })
   },[])
-
+  console.log(game)
   return (
     <>
       <Header user={ user } />
