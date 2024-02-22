@@ -4,37 +4,27 @@ import ProtectRoute from '../components/ProtectRoute';
 import Square from '../components/Square';
 import Image from "next/image";
 import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/firebase';
+import { auth, db } from '@/firebase';
 import { v4 as uuidv4 } from 'uuid';
+import Header from '../components/Header';
 
 const Create = () => {
+  const defaultBoard: { [key: number]: string }[] = [
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+    { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
+  ]
   const [piecePath, setPiecePath] = useState<string>("");
-  const [board, setBoard] = useState<string[][]>
-  ([
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-    ["","","","","","","","",""],
-  ]);
-  // const [board, setBoard] = useState<{}[]>
-  // ([
-  //   {"1九": "", "1八": "", "1七": "", "1六": "", "1五": "", "1四": "", "1三": "", "1二": "", "1一": ""},
-  //   {"2九": "", "2八": "", "2七": "", "2六": "", "2五": "", "2四": "", "2三": "", "2二": "", "2一": ""},
-  //   {"3九": "", "3八": "", "3七": "", "3六": "", "3五": "", "3四": "", "3三": "", "3二": "", "3一": ""},
-  //   {"4九": "", "4八": "", "4七": "", "4六": "", "4五": "", "4四": "", "4三": "", "4二": "", "4一": ""},
-  //   {"5九": "", "5八": "", "5七": "", "5六": "", "5五": "", "5四": "", "5三": "", "5二": "", "5一": ""},
-  //   {"6九": "", "6八": "", "6七": "", "6六": "", "6五": "", "6四": "", "6三": "", "6二": "", "6一": ""},
-  //   {"7九": "", "7八": "", "7七": "", "7六": "", "7五": "", "7四": "", "7三": "", "7二": "", "7一": ""},
-  //   {"8九": "", "8八": "", "8七": "", "8六": "", "8五": "", "8四": "", "8三": "", "8二": "", "8一": ""},
-  //   {"9九": "", "9八": "", "9七": "", "9六": "", "9五": "", "9四": "", "9三": "", "9二": "", "9一": ""},
-  // ]);
+  const [board, setBoard] = useState<{ [key: string]: string }[]>(defaultBoard);
   const [hasPiece, setHasPiece] = useState<string[]>([]);
   const boardNumber = ["一","二","三","四","五","六","七","八","九"];
+  const boardRowNumber = [1,2,3,4,5,6,7,8,9];
   const pieces = [
     { name: '王', imagePath: '/images/black_king.png' },
     { name: '飛', imagePath: '/images/black_rook.png' },
@@ -72,9 +62,9 @@ const Create = () => {
     setPiecePath(item);
   }
 
-  const handleSetArea = (row: number, col: number) => {
+  const handleSetArea = (row: number, col: string) => {
     const newBoard = [...board];
-    newBoard[row][col] = piecePath;
+    newBoard[row][col] = piecePath
     setBoard(newBoard);
     setPiecePath("");
     console.log(board);
@@ -89,56 +79,42 @@ const Create = () => {
   }
 
   const handleBoardReset = () => {
-    setBoard([
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-      ["","","","","","","","",""],
-    ])
+    setBoard(defaultBoard);
   }
 
   const handleMyAreaReset = () => {
-    setHasPiece([])
+    setHasPiece([]);
   }
 
   const handleSaveShogi = async() => {
-    const shogiId = uuidv4()
-    // await setDoc(doc(db, "Games", shogiId), {
-    //   shogiId: shogiId,
-    //   board: board,
-    //   hasPiece: hasPiece
-    // })
+    const shogiId = uuidv4();
+    await setDoc(doc(db, "games", shogiId), {
+      shogiId: shogiId,
+      board: board,
+      hasPiece: hasPiece,
+      uid: auth.currentUser?.uid
+    });
+    setBoard(defaultBoard);
   }
 
   return (
     <ProtectRoute>
-      <div className="flex flex-col justify-center items-center">
+      <Header />
+      <div className="flex flex-col justify-center items-center pt-20">
         <div className="flex items-end mb-4">
           <div>
             <div className="flex items-center">
-              <p className="w-[75px] px-6 pb-2 text-center">9</p>
-              <p className="w-[75px] px-6 pb-2 text-center">8</p>
-              <p className="w-[75px] px-6 pb-2 text-center">7</p>
-              <p className="w-[75px] px-6 pb-2 text-center">6</p>
-              <p className="w-[75px] px-6 pb-2 text-center">5</p>
-              <p className="w-[75px] px-6 pb-2 text-center">4</p>
-              <p className="w-[75px] px-6 pb-2 text-center">3</p>
-              <p className="w-[75px] px-6 pb-2 text-center">2</p>
-              <p className="w-[75px] px-6 pb-2 text-center">1</p>
-              <p className="w-[50px] pl-2"></p>
+              {boardRowNumber.map((index) => (
+                <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+              ))}
             </div>
             {board.map((row, rowIndex) => (
               <div key={rowIndex} className="flex items-center">
-                {row.map((piece, colIndex) => (
+                {Object.entries(row).map(([col, piece]) => (
                   <Square 
-                    key={`${rowIndex}-${colIndex}`} 
+                    key={`${rowIndex}-${col}`} 
                     piecePath={piece}
-                    onClick={() => handleSetArea(rowIndex, colIndex)}
+                    onClick={() => handleSetArea(rowIndex, col)}
                   />
                 ))}
                 <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>
@@ -147,14 +123,12 @@ const Create = () => {
           </div>
           <div>
             <div className="mb-10">
-              <div>
-                <button onClick={handleSaveShogi}>保存</button>
+              <div className="mb-10">
+                <button onClick={handleSaveShogi} className="w-[200px] h-[200px] border-2 border-font-color p-6 text-2xl bg-green-300">保存</button>
               </div>
               <div>
-                <button onClick={handleBoardReset}>盤面リセット</button>
-              </div>
-              <div>
-                <button onClick={handleMyAreaReset}>持ち駒リセット</button>
+                <button onClick={handleBoardReset} className="border-2 border-font-color p-2 bg-red-300">盤面リセット</button>
+                <button onClick={handleMyAreaReset} className="border-2 border-font-color p-2 bg-red-300">持ち駒リセット</button>
               </div>
             </div>
             <p>持ち駒</p>
@@ -175,7 +149,7 @@ const Create = () => {
             </div>
           </div>
         </div>
-        <div className="p-2 border border-gray-500">
+        <div className="flex gap-8 p-2 border border-gray-500">
           <div>
             <p>攻め方・持ち駒</p>
             {pieces.map((piece, index) => (

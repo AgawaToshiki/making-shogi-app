@@ -3,12 +3,12 @@ import Image from "next/image";
 
 interface SquareProps {
   piecePath: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 const Square = ({ piecePath, onClick }: SquareProps) => {
   return (
     <div 
-      className="w-[75px] h-[75px] p-4 border border-collapse box-border text-center bg-yellow-100"
+      className="w-[75px] h-[75px] p-4 border border-gray-400 border-collapse box-border text-center bg-yellow-100"
       onClick={onClick}
     >
       {piecePath ? (
