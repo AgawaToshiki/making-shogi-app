@@ -51,10 +51,10 @@ const DashBoard = () => {
   return (
     <>
       <Header />
-      <main className="max-w-[1920px] pt-20">
+      <main className={`max-w-[1920px] ${game[0].shogiId !== "" ? "pt-20" : ""}`}>
         <div className="flex flex-col items-center w-full">
           {game[0].shogiId === "" ? (
-            <p>詰将棋の登録がありません</p>
+            <p className="flex items-center justify-center h-screen">詰将棋の登録がありません</p>
           ):(
             <div>
               {game.map((game, gameIndex) => (

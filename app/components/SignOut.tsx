@@ -22,7 +22,7 @@ const SignOut = () => {
 
   
   return (
-    <button onClick={ signOutUser } className="border-2 border-font-color p-2">ログアウト</button>
+    <button onClick={ signOutUser } className="border-2 border-font-color p-6">ログアウト</button>
   )
 }
 

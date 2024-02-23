@@ -5,20 +5,20 @@ import Link from "next/link";
 const Header = () => {
   return (
     <>
-      <div className="fixed z-20 w-full py-6 px-4 flex justify-between gap-[10px] bg-red-100 shadow-md">
+      <div className="fixed z-20 w-full py-6 px-4 flex justify-between gap-[10px] bg-green-600 shadow-md">
         <h1>
           詰将棋メーカー
         </h1>
         <nav>
-          <ul className="flex gap-8">
+          <ul className="flex">
             <li>
-              <Link href="/" scroll={false}>一覧</Link>
+              <Link href="/" scroll={false} className="p-6 hover:bg-white transition-all ease-out duration-300">一覧</Link>
             </li>
             <li>
-              <Link href="/create" scroll={false}>作成</Link>
+              <Link href="/create" scroll={false} className="p-6 hover:bg-white transition-all ease-out duration-300">作成</Link>
             </li>
             <li>
-              <Link href="/setting" scroll={false}>設定</Link>
+              <Link href="/setting" scroll={false} className="p-6 hover:bg-white transition-all ease-out duration-300">設定</Link>
             </li>
           </ul>
         </nav>

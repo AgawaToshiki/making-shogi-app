@@ -9,7 +9,7 @@ const Setting = () => {
   return (
     <ProtectRoute>
 			<Header />
-			<div className="pt-20">
+			<div className="flex items-center justify-center gap-8 h-screen pt-20">
 				<DeleteAccount />
 				<SignOut />
 			</div>
