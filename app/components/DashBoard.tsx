@@ -58,11 +58,11 @@ const DashBoard = () => {
           ):(
             <div>
               {game.map((game, gameIndex) => (
-                <div key={gameIndex} className="flex items-end mb-20">
-                  <div>
+                <div key={gameIndex} className="flex items-end mb-20 max-md:flex-col max-md:items-start max-md:mb-8">
+                  <div className="max-md:mb-2">
                     <div className="flex items-center">
                       {boardRowNumber.map((index) => (
-                        <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+                        <p key={index} className="w-[75px] px-6 pb-2 text-center max-md:w-[30px] max-md:px-2 max-md:pb-1">{boardRowNumber[boardRowNumber.length - index]}</p>
                       ))}
                     </div>
                     {game.board.map((row, rowIndex) => (
@@ -73,30 +73,32 @@ const DashBoard = () => {
                             piecePath={piece}
                           />
                         ))}
-                        <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>
+                        <p className="w-[50px] pl-2 max-md:w-[30px] max-md:pl-1">{boardNumber[rowIndex]}</p>
                       </div>
                     ))}
                   </div>
-                  <div>
-                    <div className="mb-10">
+                  <div className="flex flex-col items-start max-md:w-[100%] max-md:flex-row-reverse max-md:items-end max-md:justify-between">
+                    <div className="mb-10 max-md:mb-0">
                       <div>
                         <button onClick={() => handleDeleteShogi(game.shogiId)} className="border-2 border-font-color p-2 bg-red-300">削除</button>
                       </div>
                     </div>
-                    <p>持ち駒</p>
-                    <div 
-                      className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100"
-                    >
-                      {game.hasPiece.map((piece, index) => (
-                        <Image
-                          key={index} 
-                          src={piece} 
-                          width={140} 
-                          height={148} 
-                          alt="持ち駒" 
-                          style={{ width: "40px", height: "auto", objectFit: 'contain' }}
-                        />
-                      ))}
+                    <div>
+                      <p>持ち駒</p>
+                        <div 
+                          className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2"
+                        >
+                          {game.hasPiece.map((piece, index) => (
+                            <Image
+                              key={index} 
+                              src={piece} 
+                              width={140} 
+                              height={148} 
+                              alt="持ち駒" 
+                              className="w-[40px] h-auto object-contain max-md:w-[30px]"
+                            />
+                          ))}
+                      </div>
                     </div>
                   </div>
                 </div>

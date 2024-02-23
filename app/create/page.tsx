@@ -95,17 +95,18 @@ const Create = () => {
       uid: auth.currentUser?.uid
     });
     setBoard(defaultBoard);
+    setHasPiece([]);
   }
 
   return (
     <ProtectRoute>
       <Header />
       <div className="flex flex-col justify-center items-center pt-20">
-        <div className="flex items-end mb-4">
-          <div>
+        <div className="flex items-end mb-4 max-md:flex-col max-md:items-start">
+          <div className="max-md:mb-2">
             <div className="flex items-center">
               {boardRowNumber.map((index) => (
-                <p key={index} className="w-[75px] px-6 pb-2 text-center">{boardRowNumber[boardRowNumber.length - index]}</p>
+                <p key={index} className="w-[75px] px-6 pb-2 text-center max-md:w-[30px] max-md:px-0 max-md:pb-1">{boardRowNumber[boardRowNumber.length - index]}</p>
               ))}
             </div>
             {board.map((row, rowIndex) => (
@@ -117,35 +118,37 @@ const Create = () => {
                     onClick={() => handleSetArea(rowIndex, col)}
                   />
                 ))}
-                <p className="w-[50px] pl-2">{boardNumber[rowIndex]}</p>
+                <p className="w-[50px] pl-2 max-md:w-[30px] max-md:pl-1">{boardNumber[rowIndex]}</p>
               </div>
             ))}
           </div>
-          <div>
-            <div className="mb-10">
-              <div className="mb-10">
-                <button onClick={handleSaveShogi} className="w-[200px] h-[200px] border-2 border-font-color p-6 text-2xl bg-green-300">保存</button>
+          <div className="flex flex-col items-start max-md:w-[100%] max-md:flex-row-reverse max-md:items-end max-md:justify-between">
+            <div className="mb-10 max-md:mb-0">
+              <div className="mb-10 max-md:mb-0">
+                <button onClick={handleSaveShogi} className="w-[200px] h-[200px] border-2 border-font-color p-6 text-2xl bg-green-300 max-md:w-[75px] max-md:h-[75px] max-md:p-2 max-md:text-base">保存</button>
               </div>
-              <div>
-                <button onClick={handleBoardReset} className="border-2 border-font-color p-2 bg-red-300">盤面リセット</button>
+              <div className="flex flex-col">
+                <button onClick={handleBoardReset} className="border-2 border-font-color p-2 mb-2 bg-red-300 max-md:mb-0">盤面リセット</button>
                 <button onClick={handleMyAreaReset} className="border-2 border-font-color p-2 bg-red-300">持ち駒リセット</button>
               </div>
             </div>
-            <p>持ち駒</p>
-            <div 
-              className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100"
-              onClick={handleSetMyArea}
-            >
-              {hasPiece.map((piece, index) => (
-                <Image 
-                  key={index} 
-                  src={piece} 
-                  width={140} 
-                  height={148} 
-                  alt="持ち駒" 
-                  style={{ width: "40px", height: "auto", objectFit: 'contain' }}
-                />
-              ))}
+            <div>
+              <p>持ち駒</p>
+                <div 
+                  className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2"
+                  onClick={handleSetMyArea}
+                >
+                  {hasPiece.map((piece, index) => (
+                    <Image 
+                      key={index} 
+                      src={piece} 
+                      width={140} 
+                      height={148} 
+                      alt="持ち駒" 
+                      className="w-[40px] h-auto object-contain max-md:w-[30px]"
+                    />
+                  ))}
+              </div>
             </div>
           </div>
         </div>
@@ -159,8 +162,7 @@ const Create = () => {
                   width={140} 
                   height={148} 
                   alt={piece.name} 
-                  style={{ width: "40px", height: "auto" }}
-                  className={piecePath === piece.imagePath ? "bg-red-200": ""}
+                  className={piecePath === piece.imagePath ? "bg-red-200 w-[40px] h-auto max-md:w-[30px]": "w-[40px] h-auto max-md:w-[30px]"}
                 />
               </button>
             ))}
@@ -174,8 +176,7 @@ const Create = () => {
                     width={140} 
                     height={148} 
                     alt={piece.name} 
-                    style={{ width: "40px", height: "auto" }}
-                    className={piecePath === piece.imagePath ? "bg-red-200": ""}
+                    className={piecePath === piece.imagePath ? "bg-red-200 w-[40px] h-auto max-md:w-[30px]": "w-[40px] h-auto max-md:w-[30px]"}
                   />
                 </button>
               ))}
