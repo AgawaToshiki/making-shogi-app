@@ -88,6 +88,7 @@ const Create = () => {
 
   const handleSaveShogi = async() => {
     const shogiId = uuidv4();
+    if(JSON.stringify(board) === JSON.stringify(defaultBoard)) return
     await setDoc(doc(db, "games", shogiId), {
       shogiId: shogiId,
       board: board,
