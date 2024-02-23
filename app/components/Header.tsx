@@ -10,7 +10,7 @@ const Header = () => {
           詰将棋メーカー
         </h1>
         <nav>
-          <ul className="flex gap-8">
+          <ul className="flex">
             <li>
               <Link href="/" scroll={false} className="p-6 hover:bg-white transition-all ease-out duration-300">一覧</Link>
             </li>
