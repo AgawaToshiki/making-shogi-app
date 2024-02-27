@@ -35,7 +35,6 @@ const DeleteAccount = () => {
           
           await deleteUser(user)
           window.location.href = "/"
-          console.log("delete account success")
         } catch {
           alert("アカウントが削除できませんでした")
         }

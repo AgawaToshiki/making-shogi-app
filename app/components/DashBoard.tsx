@@ -4,7 +4,7 @@ import Header from './Header';
 import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import Square from './Square';
-import Image from "next/image";
+import HasPiece from './HasPiece';
 
 const DashBoard = () => {
   const defaultBoard: { [key: number]: string }[] = [
@@ -46,8 +46,6 @@ const DashBoard = () => {
     window.location.reload();
   }
 
-  console.log(game)
-  console.log(game.length)
   return (
     <>
       <Header />
@@ -83,23 +81,7 @@ const DashBoard = () => {
                         <button onClick={() => handleDeleteShogi(game.shogiId)} className="border-2 border-font-color p-2 bg-red-300">削除</button>
                       </div>
                     </div>
-                    <div>
-                      <p>持ち駒</p>
-                        <div 
-                          className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2"
-                        >
-                          {game.hasPiece.map((piece, index) => (
-                            <Image
-                              key={index} 
-                              src={piece} 
-                              width={140} 
-                              height={148} 
-                              alt="持ち駒" 
-                              className="w-[50px] h-auto object-contain max-md:w-[30px]"
-                            />
-                          ))}
-                      </div>
-                    </div>
+                    <HasPiece hasPiece={game.hasPiece}/>
                   </div>
                 </div>
               ))}
