@@ -7,6 +7,7 @@ import { doc, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import Header from '../components/Header';
+import HasPiece from '../components/HasPiece';
 
 const Create = () => {
   const defaultBoard: { [key: number]: string }[] = [
@@ -67,7 +68,6 @@ const Create = () => {
     newBoard[row][col] = piecePath
     setBoard(newBoard);
     setPiecePath("");
-    console.log(board);
   }
 
   const handleSetMyArea = () => {
@@ -133,24 +133,7 @@ const Create = () => {
                 <button onClick={handleMyAreaReset} className="border-2 border-font-color p-2 bg-red-300">持ち駒リセット</button>
               </div>
             </div>
-            <div>
-              <p>持ち駒</p>
-                <div 
-                  className="flex flex-wrap w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2"
-                  onClick={handleSetMyArea}
-                >
-                  {hasPiece.map((piece, index) => (
-                    <Image 
-                      key={index} 
-                      src={piece} 
-                      width={140} 
-                      height={148} 
-                      alt="持ち駒" 
-                      className="w-[50px] h-auto object-contain max-md:w-[30px]"
-                    />
-                  ))}
-              </div>
-            </div>
+            <HasPiece hasPiece={hasPiece} handleSetMyArea={handleSetMyArea} />
           </div>
         </div>
         <div className="flex gap-8 p-2 border border-gray-500">
