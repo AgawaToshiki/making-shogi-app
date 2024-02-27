@@ -146,7 +146,7 @@ const Create = () => {
                       width={140} 
                       height={148} 
                       alt="持ち駒" 
-                      className="w-[40px] h-auto object-contain max-md:w-[30px]"
+                      className="w-[50px] h-auto object-contain max-md:w-[30px]"
                     />
                   ))}
               </div>
