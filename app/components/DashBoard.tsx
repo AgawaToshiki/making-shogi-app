@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
-import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, orderBy, query, where } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import Square from './Square';
 import HasPiece from './HasPiece';
@@ -24,7 +24,7 @@ const DashBoard = () => {
   useEffect(() => {
     const getGames = async() => {
       const uid = auth.currentUser?.uid
-      const gamesQuery = query(collection(db, "games"), where("uid", "==", uid))
+      const gamesQuery = query(collection(db, "games"), where("uid", "==", uid), orderBy("createdAt", "desc"))
       const querySnapshot = await getDocs(gamesQuery);
       const games : { board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[] = [];
       querySnapshot.forEach((doc) => {
