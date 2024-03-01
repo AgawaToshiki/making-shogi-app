@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import ProtectRoute from '../components/ProtectRoute';
 import Square from '../components/Square';
 import Image from "next/image";
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, serverTimestamp, setDoc } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import { v4 as uuidv4 } from 'uuid';
 import Header from '../components/Header';
@@ -89,13 +89,12 @@ const Create = () => {
   const handleSaveShogi = async() => {
     if(JSON.stringify(board) === JSON.stringify(defaultBoard)) return
     const shogiId = uuidv4();
-    const createDate = new Date();
     await setDoc(doc(db, "games", shogiId), {
       shogiId: shogiId,
       board: board,
       hasPiece: hasPiece,
       uid: auth.currentUser?.uid,
-      createdAt: createDate
+      createdAt: serverTimestamp()
     });
     setBoard(defaultBoard);
     setHasPiece([]);
