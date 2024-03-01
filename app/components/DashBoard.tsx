@@ -42,8 +42,11 @@ const DashBoard = () => {
   },[])
 
   const handleDeleteShogi = async(id: string) => {
-    await deleteDoc(doc(db, "games", id))
-    window.location.reload();
+    const isConfirm = window.confirm("本当に詰将棋を削除しますか？");
+    if(isConfirm){
+      await deleteDoc(doc(db, "games", id));
+      window.location.reload();
+    }
   }
 
   return (
