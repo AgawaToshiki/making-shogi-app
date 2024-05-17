@@ -71,7 +71,12 @@ const Create = () => {
   }
 
   const handleSetMyArea = () => {
-    if(piecePath != ""){
+    //持ち駒には追加できない駒を設定
+    const selectPiece = piecePath;
+    const regex = /(white|dragon|horse|king|prom)/;
+    const checkStr = selectPiece.match(regex);
+
+    if(piecePath != "" && !checkStr){
       const newHasPiece = [...hasPiece, piecePath];
       setHasPiece(newHasPiece);
     }
