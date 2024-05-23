@@ -11,7 +11,7 @@ const HasPiece = ({ hasPiece, handleSetMyArea }: hasPieceProps) => {
     <div>
     <p>持ち駒</p>
       <div 
-        className="flex flex-wrap content-center w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2"
+        className="flex flex-wrap content-center gap-y-4 w-[250px] h-[250px] p-6 bg-yellow-100 max-md:w-[150px] max-md:h-[150px] max-md:p-2 max-md:gap-y-2"
         onClick={handleSetMyArea}
       >
         {hasPiece.map((piece, index) => (
