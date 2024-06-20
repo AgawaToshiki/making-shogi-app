@@ -1,10 +1,11 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import Header from './Header';
-import { collection, deleteDoc, doc, getDocs, orderBy, query, where } from 'firebase/firestore';
+import { collection, deleteDoc, doc, onSnapshot, orderBy, query, where } from 'firebase/firestore';
 import { auth, db } from '@/firebase';
 import Square from './Square';
 import HasPiece from './HasPiece';
+
 
 const DashBoard = () => {
   const defaultBoard: { [key: number]: string }[] = [
@@ -17,48 +18,47 @@ const DashBoard = () => {
     { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
     { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
     { 1: "", 2: "", 3: "", 4: "", 5: "", 6: "", 7: "", 8: "", 9: "" },
-  ]
-  const [game, setGame] = useState<{ board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[]>([{ board: defaultBoard, hasPiece: [], shogiId: "" }]);
+  ];
   const boardNumber = ["一","二","三","四","五","六","七","八","九"];
   const boardRowNumber = [1,2,3,4,5,6,7,8,9];
+
+  const [shogi, setShogi] = useState<{ board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[]>([{ board: defaultBoard, hasPiece: [], shogiId: "" }]);
+
   useEffect(() => {
-    const getGames = async() => {
-      const uid = auth.currentUser?.uid
-      const gamesQuery = query(collection(db, "games"), where("uid", "==", uid), orderBy("createdAt", "desc"))
-      const querySnapshot = await getDocs(gamesQuery);
-      const games : { board: { [key: number]: string }[], hasPiece: string[], shogiId: string }[] = [];
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const gameData = {
-          board: data.board,
-          hasPiece: data.hasPiece,
-          shogiId: data.shogiId
-        }
-        games.push(gameData)
-        setGame(games)
+    if(auth.currentUser){
+      const uid = auth.currentUser.uid;
+      const getShogi = query(collection(db, "games"), where("uid", "==", uid), orderBy("createdAt", "desc"));
+      onSnapshot(getShogi, (querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          const shogiData = doc.data();
+          return {
+            board: shogiData.board,
+            hasPiece: shogiData.hasPiece,
+            shogiId: shogiData.shogiId
+          }
+        })
+        setShogi(data);
       })
     }
-    getGames();
   },[])
 
   const handleDeleteShogi = async(id: string) => {
     const isConfirm = window.confirm("本当に詰将棋を削除しますか？");
     if(isConfirm){
       await deleteDoc(doc(db, "games", id));
-      window.location.reload();
     }
   }
 
   return (
     <>
       <Header />
-      <main className={`max-w-[1920px] ${game[0].shogiId !== "" ? "pt-20" : ""}`}>
+      <main className={`max-w-[1920px] ${shogi[0].shogiId !== "" ? "pt-20" : ""}`}>
         <div className="flex flex-col items-center w-full">
-          {game[0].shogiId === "" ? (
+          {shogi[0].shogiId === "" ? (
             <p className="flex items-center justify-center h-screen">詰将棋の登録がありません</p>
           ):(
             <div>
-              {game.map((game, gameIndex) => (
+              {shogi.map((game, gameIndex) => (
                 <div key={gameIndex} className="flex items-end mb-20 max-md:flex-col max-md:items-start max-md:mb-8">
                   <div className="max-md:mb-2">
                     <div className="flex items-center">
